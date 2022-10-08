@@ -86,5 +86,5 @@ function createPublication() {
 
 // Создание объектов на основе созданного объявления
 
-const publications = Array.from({ length: AMOUNT_OF_OBJECTS }, createPublication);
+Array.from({ length: AMOUNT_OF_OBJECTS }, createPublication);
 
