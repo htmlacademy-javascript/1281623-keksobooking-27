@@ -17,7 +17,7 @@ const MIN_PRICE = 1500;
 
 const MAX_PRICE = 3000;
 
-const TYPES_OF_ROOMS = [
+const TYPES_OF_HOUSING = [
   'palace',
   'flat',
   'house',
@@ -60,12 +60,10 @@ const DESCRIPTIONS = [
 ];
 
 const PHOTOS = [
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/// keksobooking/duonguyen-8LrGtIxxa4w.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/// brandon-hoogenboom-SNxQGWxZQi0.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/// claire-rendall-b6kAwr1i0Iw.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
-
-const OFFERS_COUNT = 10;
 
 function createOffer(_, index) {
   const location = {
@@ -81,7 +79,7 @@ function createOffer(_, index) {
       title: getRandomArrayElement(TITLES),
       address: `${location.lat}, ${location.lng}`,
       price: Math.round(getRandomInteger(MIN_PRICE, MAX_PRICE) / 100) * 100,
-      type: getRandomArrayElement(TYPES_OF_ROOMS),
+      type: getRandomArrayElement(TYPES_OF_HOUSING),
       rooms: getRandomInteger(1, 3),
       guests: getRandomInteger(1, 6),
       checkin: getRandomArrayElement(CHECKINS),
@@ -94,6 +92,8 @@ function createOffer(_, index) {
   };
 }
 
-const offers = Array.from({ length: OFFERS_COUNT }, createOffer);
+function createOffers(offersCount) {
+  return Array.from({ length: offersCount }, createOffer);
+}
 
-export {offers};
+export {createOffers};

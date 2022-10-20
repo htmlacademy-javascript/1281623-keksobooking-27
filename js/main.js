@@ -1,8 +1,9 @@
 import './util.js';
-import {offers} from './data.js';
+import {createOffers} from './data.js';
+import './template.js';
 import './validation.js';
 import './map.js';
 import './filter.js';
 
 // eslint-disable-next-line no-console
-console.log(offers);
+console.log(createOffers(1));
