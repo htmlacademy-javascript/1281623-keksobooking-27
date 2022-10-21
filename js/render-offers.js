@@ -3,6 +3,8 @@ import { typesOfHousingsInRus } from './data.js';
 const cardContainer = document.querySelector('#map-canvas');
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
+const cardContainerFragment = document.createDocumentFragment();
+
 function renderOffers(offers) {
   offers.forEach(({ author, offer }) => {
     const card = cardTemplate.cloneNode(true);
@@ -30,8 +32,9 @@ function renderOffers(offers) {
     card.querySelector('.popup__description').textContent = offer.description;
     card.querySelector('.popup__photo').src = offer.photos;
 
-    cardContainer.append(card);
+    cardContainerFragment.append(card);
   });
+  cardContainer.append(cardContainerFragment);
 }
 
 export { renderOffers };
