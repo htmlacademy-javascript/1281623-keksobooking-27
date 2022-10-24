@@ -1,10 +1,9 @@
-import './util.js';
-import './data.js';
-import { renderOffers } from './render-offers.js';
 import { createOffers } from './create-offers.js';
-import './validation.js';
-import './map.js';
-import './filter.js';
+import { renderOffers } from './render-offers.js';
+import { disableForm, activateForm } from './form-state.js';
 
-const offers = createOffers(1);
+const offers = createOffers(2);
 renderOffers(offers);
+
+disableForm();
+activateForm();
