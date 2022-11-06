@@ -31,8 +31,14 @@ function getRoomNumberErrorMessage () {
   `;
 }
 
+function onCapacityChange() {
+  pristine.validate(roomNumber);
+}
+
+capacity.addEventListener('change', onCapacityChange);
+
 pristine.addValidator(roomNumber, validateRoomNumber, getRoomNumberErrorMessage);
-pristine.addValidator(capacity, validateRoomNumber, getRoomNumberErrorMessage);
+pristine.addValidator(capacity, validateRoomNumber);
 
 // Валидация на соответствие типа жилья и минимальной цены за ночь
 
@@ -61,7 +67,9 @@ function onHousingTypeChange() {
 
 const housingTypes = adForm.querySelectorAll('[name="type"]');
 
-housingTypes.forEach((item) => item.addEventListener('change', onHousingTypeChange));
+housingTypes.forEach((item) => {
+  item.addEventListener('change', onHousingTypeChange);
+});
 
 pristine.addValidator(priceField, validatePrice, getPriceErrorMessage);
 
