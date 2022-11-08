@@ -38,5 +38,8 @@ function activateForm() {
   activateElements(selectsInMapForm);
 }
 
-export { disableForm, activateForm };
+disableForm();
+
+export { activateForm };
+
 

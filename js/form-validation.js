@@ -1,10 +1,11 @@
+import './slider.js';
+
 const adForm = document.querySelector('.ad-form');
 
 const pristine = new Pristine(adForm, {
   classTo: 'ad-form__element',
   errorClass: 'ad-form__element--invalid',
   errorTextParent: 'ad-form__element',
-  errorTextTag: 'div',
   errorTextClass: 'text-help',
 });
 
@@ -31,8 +32,14 @@ function getRoomNumberErrorMessage () {
   `;
 }
 
+function onCapacityChange() {
+  pristine.validate(roomNumber);
+}
+
+capacity.addEventListener('change', onCapacityChange);
+
 pristine.addValidator(roomNumber, validateRoomNumber, getRoomNumberErrorMessage);
-pristine.addValidator(capacity, validateRoomNumber, getRoomNumberErrorMessage);
+pristine.addValidator(capacity, validateRoomNumber);
 
 // Валидация на соответствие типа жилья и минимальной цены за ночь
 
@@ -61,7 +68,9 @@ function onHousingTypeChange() {
 
 const housingTypes = adForm.querySelectorAll('[name="type"]');
 
-housingTypes.forEach((item) => item.addEventListener('change', onHousingTypeChange));
+housingTypes.forEach((item) => {
+  item.addEventListener('change', onHousingTypeChange);
+});
 
 pristine.addValidator(priceField, validatePrice, getPriceErrorMessage);
 
@@ -82,3 +91,6 @@ adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   pristine.validate();
 });
+
+
+export { pristine };
