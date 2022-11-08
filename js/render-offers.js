@@ -44,7 +44,7 @@ const cardTemplate = document.querySelector('#card').content.querySelector('.pop
 //   cardContainer.append(cardContainerFragment);
 // }
 
-function renderOffer({author, offer, location}) {
+const renderOffer = ({ author, offer, location }) => {
   const card = cardTemplate.cloneNode(true);
 
   card.querySelector('.popup__avatar').src = author.avatar;
@@ -71,7 +71,7 @@ function renderOffer({author, offer, location}) {
   card.querySelector('.popup__photo').src = offer.photos;
 
   return card;
-}
+};
 
 export { renderOffer };
 

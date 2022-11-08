@@ -1,42 +1,39 @@
 const adForm = document.querySelector('.ad-form');
 const mapForm = document.querySelector('.map__filters');
 
-const inputsInAdForm = adForm.querySelectorAll('input');
-const selectsInAdForm = adForm.querySelectorAll('select');
-const inputsInMapForm = mapForm.querySelectorAll('input');
+const fieldsetsInAdForm = adForm.querySelectorAll('fieldset');
+const fieldsetsInMapForm = mapForm.querySelectorAll('fieldset');
 const selectsInMapForm = mapForm.querySelectorAll('select');
 
-function disableElements(elements) {
+const disableElements = (elements) => {
   elements.forEach((element) => {
     element.disabled = true;
   });
-}
+};
 
-function activateElements(elements) {
+const activateElements = (elements) => {
   elements.forEach((element) => {
     element.disabled = false;
   });
-}
+};
 
-function disableForm() {
+const disableForm = () => {
   adForm.classList.add('ad-form--disabled');
   mapForm.classList.add('map__filters--disabled');
 
-  disableElements(inputsInAdForm);
-  disableElements(selectsInAdForm);
-  disableElements(inputsInMapForm);
+  disableElements(fieldsetsInAdForm);
+  disableElements(fieldsetsInMapForm);
   disableElements(selectsInMapForm);
-}
+};
 
-function activateForm() {
+const activateForm = () => {
   adForm.classList.remove('ad-form--disabled');
   mapForm.classList.remove('map__filters--disabled');
 
-  activateElements(inputsInAdForm);
-  activateElements(selectsInAdForm);
-  activateElements(inputsInMapForm);
+  activateElements(fieldsetsInAdForm);
+  activateElements(fieldsetsInMapForm);
   activateElements(selectsInMapForm);
-}
+};
 
 disableForm();
 
