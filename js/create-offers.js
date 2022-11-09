@@ -21,8 +21,8 @@ const TokyoCoordinates = {
 };
 
 const Prices = {
-  MIN: 1500,
-  MAX: 3000,
+  MIN: 0,
+  MAX: 100000,
 };
 
 const AmountOfRooms = {
@@ -32,7 +32,7 @@ const AmountOfRooms = {
 
 const AmountOfGuests = {
   MIN: 1,
-  MAX: 6,
+  MAX: 3,
 };
 
 const housingTypes = [

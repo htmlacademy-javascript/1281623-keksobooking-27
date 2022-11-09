@@ -5,16 +5,17 @@ import { pristine } from './form-validation.js';
 
 const offers = createOffers(10);
 
-const address = document.querySelector('#address');
+const addressInput = document.querySelector('#address');
+const coordinatesOfTokyo = {
+  lat: 35.675,
+  lng: 139.75,
+};
 
 const map = L.map('map-canvas')
   .on('load', () => {
     activateForm();
   })
-  .setView({
-    lat: 35.675,
-    lng: 139.75,
-  }, 13);
+  .setView(coordinatesOfTokyo, 13);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -38,33 +39,29 @@ const offerPinIcon = L.icon({
 });
 
 const mainPinMarker = L.marker(
-  {
-    lat: 35.675,
-    lng: 139.75,
-  },
+  coordinatesOfTokyo,
   {
     draggable: true,
     icon: mainPinIcon,
   },
 );
 
-address.addEventListener('click', () => {
+addressInput.addEventListener('click', () => {
   mainPinMarker.addTo(map);
-  address.placeholder = '35.67500, 139.75000';
+  addressInput.placeholder = `${(coordinatesOfTokyo.lat).toFixed(5)}, ${(coordinatesOfTokyo.lng).toFixed(5)}`;
 });
 
 mainPinMarker.on('move', (evt) => {
   const coordinates = evt.target.getLatLng();
-  address.value = `${Number((coordinates.lat).toFixed(5))}, ${Number((coordinates.lng).toFixed(5))}`;
-  pristine.validate();
+  addressInput.value = `${(coordinates.lat).toFixed(5)}, ${(coordinates.lng).toFixed(5)}`;
+  pristine.validate(addressInput);
 });
 
 offers.forEach(({author, offer, location}) => {
-  const {lat, lng} = location; // ? Немного непонятно, что делает эта строка
   const marker = L.marker(
     {
-      lat,
-      lng,
+      lat: location.lat,
+      lng: location.lng,
     },
     {
       offerPinIcon,

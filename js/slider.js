@@ -1,7 +1,7 @@
-const sliderElement = document.querySelector('.ad-form__slider');
+const slider = document.querySelector('.ad-form__slider');
 const priceInput = document.querySelector('#price');
 
-noUiSlider.create(sliderElement, {
+noUiSlider.create(slider, {
   range: {
     min: 0,
     max: 100000,
@@ -19,17 +19,17 @@ noUiSlider.create(sliderElement, {
   },
 });
 
-sliderElement.noUiSlider.on('update', () => {
-  priceInput.value = sliderElement.noUiSlider.get();
+slider.noUiSlider.on('update', () => {
+  priceInput.value = slider.noUiSlider.get();
 });
 
 priceInput.addEventListener('input', () => {
   if (priceInput.value === '') {
-    sliderElement.noUiSlider.set(0);
+    slider.noUiSlider.set(0);
     priceInput.value = '';
   } else if (priceInput.value === '0') {
-    sliderElement.noUiSlider.set(0);
+    slider.noUiSlider.set(0);
   } else if (priceInput.value >= 1) {
-    sliderElement.noUiSlider.set(priceInput.value);
+    slider.noUiSlider.set(priceInput.value);
   }
 });
