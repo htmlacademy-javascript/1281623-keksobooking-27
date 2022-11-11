@@ -10,7 +10,7 @@ const pristine = new Pristine(adForm, {
 });
 
 const housingTypeSelect = adForm.querySelector('[name="type"]');
-const housingTypeOptions = adForm.querySelectorAll('[name="type"]');
+const housingTypeOptions = adForm.querySelectorAll('[name="type"]'); // ? каким образом тут создаётся массив
 const priceInput = adForm.querySelector('[name="price"]');
 const minPrices = {
   bungalow: 0,
