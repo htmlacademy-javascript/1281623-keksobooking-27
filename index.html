@@ -5,6 +5,8 @@
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/vendor/leaflet/leaflet.css" crossorigin="" />
+  <link rel="stylesheet" href="/vendor/nouislider/nouislider.css">
   <title>Кексобукинг</title>
 </head>
 <body>
@@ -95,21 +97,22 @@
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="address">Адрес (координаты)</label>
-          <input id="address" name="address" type="text" readonly>
+          <input id="address" name="address" type="text" readonly required
+          data-pristine-required-message="Обязательное поле">
         </fieldset>
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="type">Тип жилья</label>
           <select id="type" name="type">
-            <option value="bungalow">Бунгало</option>
+            <option value="bungalow" selected>Бунгало</option>
             <option value="flat">Квартира</option>
-            <option value="hotel" selected>Отель</option>
+            <option value="hotel">Отель</option>
             <option value="house">Дом</option>
             <option value="palace">Дворец</option>
           </select>
         </fieldset>
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="price">Цена за ночь, руб.</label>
-          <input id="price" name="price" type="number" placeholder="3000" required max="100000"
+          <input id="price" name="price" type="number" placeholder="0" required max="100000"
             data-pristine-required-message="Обязательное поле"
             data-pristine-max-message="Максимальная цена 100000">
           <div class="ad-form__slider"></div>
@@ -139,9 +142,9 @@
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="capacity">Количество мест</label>
           <select id="capacity" name="capacity">
-            <option value="для 3 гостей" selected>для 3 гостей</option>
+            <option value="для 3 гостей">для 3 гостей</option>
             <option value="для 2 гостей">для 2 гостей</option>
-            <option value="для 1 гостя">для 1 гостя</option>
+            <option value="для 1 гостя" selected>для 1 гостя</option>
             <option value="не для гостей">не для гостей</option>
           </select>
         </fieldset>
@@ -235,6 +238,8 @@
     </div>
   </template>
 
+  <script src="/vendor/leaflet/leaflet.js" crossorigin=""></script>
+  <script src="/vendor/nouislider/nouislider.js"></script>
   <script src="/vendor/pristine/pristine.min.js"></script>
   <script src="/js/main.js" type="module"></script>
 
