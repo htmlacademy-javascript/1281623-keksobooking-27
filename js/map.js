@@ -1,9 +1,6 @@
-import { activateForm } from './form-state.js';
-import { createOffers } from './create-offers.js';
+// import { activateForm } from './form-state.js';
 import { renderOffer } from './render-offers.js';
 import { pristine } from './form-validation.js';
-
-const offers = createOffers(10);
 
 const addressInput = document.querySelector('#address');
 const coordinatesOfTokyo = {
@@ -11,11 +8,7 @@ const coordinatesOfTokyo = {
   lng: 139.75,
 };
 
-const map = L.map('map-canvas')
-  .on('load', () => {
-    activateForm();
-  })
-  .setView(coordinatesOfTokyo, 13);
+const map = L.map('map-canvas');
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -57,19 +50,22 @@ mainPinMarker.on('move', (evt) => {
   pristine.validate(addressInput);
 });
 
-offers.forEach(({author, offer, location}) => {
-  const marker = L.marker(
-    {
-      lat: location.lat,
-      lng: location.lng,
-    },
-    {
-      offerPinIcon,
-    },
-  );
+const renderOffers = (offers) => {
+  offers.forEach(({ author, offer, location }) => {
+    const marker = L.marker(
+      {
+        lat: location.lat,
+        lng: location.lng,
+      },
+      {
+        offerPinIcon,
+      },
+    );
 
-  marker
-    .addTo(markerGroup)
-    .bindPopup(renderOffer({author, offer, location}));
-});
+    marker
+      .addTo(markerGroup)
+      .bindPopup(renderOffer({ author, offer, location }));
+  });
+};
 
+export { map, coordinatesOfTokyo, renderOffers };

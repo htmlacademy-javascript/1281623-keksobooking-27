@@ -1,9 +1,16 @@
-import './form-state.js';
-// import { createOffers } from './create-offers.js';
-// import { renderOffers } from './render-offers.js';
-import './map.js';
+import { disableForm, activateForm } from './form-state.js';
+import { createOffers } from './create-offers.js';
+import { map, coordinatesOfTokyo, renderOffers } from './map.js';
 import './form-validation.js';
 
-// const offers = createOffers(5);
-// renderOffers(offers);
 
+disableForm();
+
+const offers = createOffers(10);
+renderOffers(offers);
+
+
+map.on('load', () => {
+  activateForm();
+})
+  .setView(coordinatesOfTokyo, 13);

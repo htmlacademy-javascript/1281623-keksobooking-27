@@ -35,8 +35,6 @@ const activateForm = () => {
   activateElements(selectsInMapForm);
 };
 
-disableForm();
-
-export { activateForm };
+export { disableForm, activateForm };
 
 
