@@ -1,16 +1,19 @@
-import { disableForm, activateForm } from './form-state.js';
-import { createOffers } from './create-offers.js';
-import { map, coordinatesOfTokyo, renderOffers } from './map.js';
-import './form-validation.js';
+import { initMap, renderMarkers } from './map.js';
+import { getData } from './server.js';
+import { activateAdForm, showAlert } from './form-utils.js';
+import { initSlider } from './slider.js';
+import { validateTypesAndPrices, validateRoomsAndCapasity, synchronizeTimeInAndTimeOut, setAdFormSubmit } from './form-validation.js';
+import { uploadAvatar, uploadPhotos } from './form-images.js';
 
+initMap(() => {
+  getData(renderMarkers, showAlert);
+  activateAdForm();
+  initSlider();
+});
 
-disableForm();
-
-const offers = createOffers(10);
-renderOffers(offers);
-
-
-map.on('load', () => {
-  activateForm();
-})
-  .setView(coordinatesOfTokyo, 13);
+validateTypesAndPrices();
+validateRoomsAndCapasity();
+synchronizeTimeInAndTimeOut();
+setAdFormSubmit();
+uploadAvatar();
+uploadPhotos();

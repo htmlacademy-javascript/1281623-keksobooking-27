@@ -648,6 +648,10 @@ fieldset {
   background-color: #ff6d51;
 }
 
+.ad-form__submit:disabled {
+  pointer-events: none;
+}
+
 .ad-form__reset {
   margin: 0;
   padding: 0;
@@ -855,7 +859,7 @@ fieldset {
   font-weight: 700;
 }
 
-.popup__price span {
+.popup__text--price span {
   font-size: 16px;
 }
 
