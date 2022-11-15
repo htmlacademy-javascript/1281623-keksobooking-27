@@ -1,30 +1,41 @@
+import { activateMapForm } from './form-utils.js';
+
+const Url = {
+  DATA: 'https://27.javascript.pages.academy/keksobooking/data',
+  SERVER: 'https://27.javascript.pages.academy/keksobooking',
+};
+const OFFERS_COUNT = 10;
+
 const getData = (onSuccess, OnError) => {
-  fetch('https://27.javascript.pages.academy/keksobooking/data')
+  fetch(Url.DATA)
     .then((response) => {
       if (response.ok) {
         return response.json();
       }
-      throw new Error('Ошибка загрузки информации с сервера');
+      throw new Error('Ошибка загрузки данных с сервера');
     })
-    .then((data) => onSuccess(data))
-    .catch((error) => OnError(error.message));
+    .then((data) => {
+      onSuccess(data.slice(0, OFFERS_COUNT));
+      activateMapForm();
+    })
+    .catch(() => OnError('Ошибка загрузки данных с сервера'));
 };
 
 const sendData = (onSuccess, OnError, body) => {
   fetch(
-    'https://27.javascript.pages.academy/keksobooking',
+    Url.SERVER,
     {
       method: 'POST',
-      body
+      body: body,
     }
   )
     .then((response) => {
       if (response.ok) {
         return onSuccess();
       }
-      throw new Error('Ошибка размещения объявления');
+      throw new Error();
     })
-    .catch((error) => OnError(error.message));
+    .catch(() => OnError());
 };
 
 export { getData, sendData };

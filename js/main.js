@@ -1,9 +1,19 @@
-import './form-state.js';
-// import { createOffers } from './create-offers.js';
-// import { renderOffers } from './render-offers.js';
-import './map.js';
-import './form-validation.js';
+import { initMap, renderMarkers } from './map.js';
+import { getData } from './server.js';
+import { activateAdForm, showAlert } from './form-utils.js';
+import { initSlider } from './slider.js';
+import { validateTypesAndPrices, validateRoomsAndCapasity, synchronizeTimeInAndTimeOut, setAdFormSubmit } from './form-validation.js';
+import { uploadAvatar, uploadPhotos } from './form-images.js';
 
-// const offers = createOffers(5);
-// renderOffers(offers);
+initMap(() => {
+  getData(renderMarkers, showAlert);
+  activateAdForm();
+  initSlider();
+});
 
+validateTypesAndPrices();
+validateRoomsAndCapasity();
+synchronizeTimeInAndTimeOut();
+setAdFormSubmit();
+uploadAvatar();
+uploadPhotos();

@@ -1,4 +1,5 @@
-import './slider.js';
+import { sendData } from './server.js';
+import { blockSubmitButton, unblockSubmitButton, activateResetButton, showSuccessMessage, showErrorMessage } from './form-utils.js';
 
 const adForm = document.querySelector('.ad-form');
 
@@ -10,7 +11,7 @@ const pristine = new Pristine(adForm, {
 });
 
 const housingTypeSelect = adForm.querySelector('[name="type"]');
-const housingTypeOptions = adForm.querySelectorAll('[name="type"]'); // ? каким образом тут создаётся массив
+const housingTypeOptions = adForm.querySelectorAll('[name="type"]');
 const priceInput = adForm.querySelector('[name="price"]');
 const minPrices = {
   bungalow: 0,
@@ -20,63 +21,79 @@ const minPrices = {
   palace: 10000,
 };
 
+const roomNumberSelect = adForm.querySelector('[name="rooms"]');
+const capacitySelect = adForm.querySelector('[name="capacity"]');
+const roomNumberOptions = {
+  '1': ['1'],
+  '2': ['1', '2'],
+  '3': ['1', '2', '3'],
+  '100': ['0'],
+};
+
 const adFormTime = adForm.querySelector('.ad-form__element--time');
 const timeInSelect = adForm.querySelector('[name="timein"]');
 const timeOutSelect = adForm.querySelector('[name="timeout"]');
 
-const roomNumberSelect = adForm.querySelector('[name="rooms"]');
-const capacitySelect = adForm.querySelector('[name="capacity"]');
-const roomNumberOptions = {
-  '1 комната': ['для 1 гостя'],
-  '2 комнаты': ['для 1 гостя', 'для 2 гостей'],
-  '3 комнаты': ['для 1 гостя', 'для 2 гостей', 'для 3 гостей'],
-  '100 комнат': ['не для гостей'],
+const validateTypesAndPrices = () => {
+  const validatePriceInput = (value) => value.length && parseInt(value, 10) >= minPrices[housingTypeSelect.value];
+
+  const getPriceErrorMessage = () => `Минимальная цена ${minPrices[housingTypeSelect.value]}`;
+
+  housingTypeOptions.forEach((option) => {
+    option.addEventListener('change', function () {
+      priceInput.placeholder = minPrices[this.value];
+      pristine.validate(priceInput.placeholder);
+    });
+  });
+
+  pristine.addValidator(priceInput, validatePriceInput, getPriceErrorMessage);
 };
 
-// Валидация на соответствие типа жилья и минимальной цены за ночь
-const validatePriceInput = (value) => value.length && parseInt(value, 10) >= minPrices[housingTypeSelect.value];
+const validateRoomsAndCapasity = () => {
+  const validateRoomNumberSelect = () => roomNumberOptions[roomNumberSelect.value].includes(capacitySelect.value);
 
-const getPriceErrorMessage = () => `Минимальная цена ${minPrices[housingTypeSelect.value]}`;
+  const getRoomNumberErrorMessage = () => `
+      ${roomNumberSelect.options[roomNumberSelect.selectedIndex].textContent}
+      ${capacitySelect.options[capacitySelect.selectedIndex].textContent}
+      ${roomNumberSelect.options[roomNumberSelect.selectedIndex].textContent === '1 комната' ? 'недоступна' : 'недоступны'}
+    `;
 
-const onHousingTypeSelectChange = function () {
-  priceInput.placeholder = minPrices[this.value];
-  pristine.validate(priceInput.placeholder);
+  capacitySelect.addEventListener('change', () => {
+    pristine.validate(roomNumberSelect);
+  });
+
+  pristine.addValidator(roomNumberSelect, validateRoomNumberSelect, getRoomNumberErrorMessage);
+  pristine.addValidator(capacitySelect, validateRoomNumberSelect);
 };
 
-housingTypeOptions.forEach((option) => {
-  option.addEventListener('change', onHousingTypeSelectChange);
-});
-
-pristine.addValidator(priceInput, validatePriceInput, getPriceErrorMessage);
-
-// Синхронизация времени заезда и выезда
-adFormTime.addEventListener('change', (evt) => {
-  timeInSelect.value = evt.target.value;
-  timeOutSelect.value = evt.target.value;
-});
-
-// Валидация на соответствие количества комнат и количества гостей
-const validateRoomNumberSelect = () => roomNumberOptions[roomNumberSelect.value].includes(capacitySelect.value);
-
-const getRoomNumberErrorMessage = () => `
-    ${roomNumberSelect.value}
-    ${capacitySelect.value}
-    ${roomNumberSelect.value === '1 комната' ? 'недоступна' : 'недоступны'}
-  `;
-
-const onCapacitySelectChange = () => {
-  pristine.validate(roomNumberSelect);
+const synchronizeTimeInAndTimeOut = () => {
+  adFormTime.addEventListener('change', (evt) => {
+    timeInSelect.value = evt.target.value;
+    timeOutSelect.value = evt.target.value;
+  });
 };
 
-capacitySelect.addEventListener('change', onCapacitySelectChange);
+const setAdFormSubmit = () => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
 
-pristine.addValidator(roomNumberSelect, validateRoomNumberSelect, getRoomNumberErrorMessage);
-pristine.addValidator(capacitySelect, validateRoomNumberSelect);
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          showSuccessMessage();
+          unblockSubmitButton();
+          activateResetButton();
+        },
+        () => {
+          showErrorMessage();
+          unblockSubmitButton();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
+};
 
-// Запуск валидации при отправке формы
-adForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-});
-
-export { pristine };
+export { pristine, validateTypesAndPrices, validateRoomsAndCapasity, synchronizeTimeInAndTimeOut, setAdFormSubmit };

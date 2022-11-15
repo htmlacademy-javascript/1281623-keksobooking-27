@@ -1,30 +1,16 @@
-import { activateForm } from './form-state.js';
-import { createOffers } from './create-offers.js';
-import { renderOffer } from './render-offers.js';
+import { createOfferElement } from './create-offers.js';
 import { pristine } from './form-validation.js';
 
-const offers = createOffers(10);
-
 const addressInput = document.querySelector('#address');
+const map = L.map('map-canvas');
+const markerGroup = L.layerGroup().addTo(map);
+
+const ZOOM_LEVEL = 13;
+
 const coordinatesOfTokyo = {
   lat: 35.675,
   lng: 139.75,
 };
-
-const map = L.map('map-canvas')
-  .on('load', () => {
-    activateForm();
-  })
-  .setView(coordinatesOfTokyo, 13);
-
-L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  },
-).addTo(map);
-
-const markerGroup = L.layerGroup().addTo(map);
 
 const mainPinIcon = L.icon({
   iconUrl: '/img/main-pin.svg',
@@ -46,30 +32,52 @@ const mainPinMarker = L.marker(
   },
 );
 
-addressInput.addEventListener('click', () => {
-  mainPinMarker.addTo(map);
-  addressInput.placeholder = `${(coordinatesOfTokyo.lat).toFixed(5)}, ${(coordinatesOfTokyo.lng).toFixed(5)}`;
-});
-
-mainPinMarker.on('move', (evt) => {
-  const coordinates = evt.target.getLatLng();
-  addressInput.value = `${(coordinates.lat).toFixed(5)}, ${(coordinates.lng).toFixed(5)}`;
-  pristine.validate(addressInput);
-});
-
-offers.forEach(({author, offer, location}) => {
-  const marker = L.marker(
+const initMap = (onMapLoad) => {
+  L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
-      lat: location.lat,
-      lng: location.lng,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     },
-    {
-      offerPinIcon,
-    },
-  );
+  ).addTo(map);
 
-  marker
-    .addTo(markerGroup)
-    .bindPopup(renderOffer({author, offer, location}));
-});
+  map.on('load', onMapLoad).setView(coordinatesOfTokyo, ZOOM_LEVEL);
 
+  addressInput.addEventListener('click', () => {
+    mainPinMarker.addTo(map);
+    addressInput.placeholder = `${(coordinatesOfTokyo.lat).toFixed(5)}, ${(coordinatesOfTokyo.lng).toFixed(5)}`;
+  });
+
+  mainPinMarker.on('move', () => {
+    const coordinates = mainPinMarker.getLatLng();
+    addressInput.value = `${(coordinates.lat).toFixed(5)}, ${(coordinates.lng).toFixed(5)}`;
+    pristine.validate(addressInput);
+  });
+};
+
+const renderMarkers = (arr) => {
+  markerGroup.clearLayers();
+
+  arr.forEach((data) => {
+    const marker = L.marker(
+      {
+        lat: data.location.lat,
+        lng: data.location.lng,
+      },
+      {
+        offerPinIcon,
+      },
+    );
+
+    marker
+      .addTo(markerGroup)
+      .bindPopup(createOfferElement(data));
+  });
+};
+
+const resetMainPinMarker = () => {
+  mainPinMarker.remove();
+  mainPinMarker.setLatLng(coordinatesOfTokyo);
+  addressInput.placeholder = '';
+};
+
+export { initMap, renderMarkers, resetMainPinMarker };
