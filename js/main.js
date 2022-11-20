@@ -2,8 +2,9 @@ import { initMap, renderMarkers } from './map.js';
 import { getData } from './server.js';
 import { activateAdForm, showAlert } from './form-utils.js';
 import { initSlider } from './slider.js';
-import { validateTypesAndPrices, validateRoomsAndCapasity, synchronizeTimeInAndTimeOut, setAdFormSubmit } from './form-validation.js';
-import { uploadAvatar, uploadPhotos } from './form-images.js';
+import { initValidation, setAdFormSubmit } from './form-validation.js';
+import { setUploadAvatar, setUploadPhotos } from './form-images.js';
+import './filter.js';
 
 initMap(() => {
   getData(renderMarkers, showAlert);
@@ -11,9 +12,7 @@ initMap(() => {
   initSlider();
 });
 
-validateTypesAndPrices();
-validateRoomsAndCapasity();
-synchronizeTimeInAndTimeOut();
+initValidation();
 setAdFormSubmit();
-uploadAvatar();
-uploadPhotos();
+setUploadAvatar();
+setUploadPhotos();

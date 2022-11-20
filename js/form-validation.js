@@ -1,5 +1,5 @@
 import { sendData } from './server.js';
-import { blockSubmitButton, unblockSubmitButton, activateResetButton, showSuccessMessage, showErrorMessage } from './form-utils.js';
+import { blockSubmitButton, unblockSubmitButton, showSuccessMessage, showErrorMessage, resetForm } from './form-utils.js';
 
 const adForm = document.querySelector('.ad-form');
 
@@ -34,43 +34,49 @@ const adFormTime = adForm.querySelector('.ad-form__element--time');
 const timeInSelect = adForm.querySelector('[name="timein"]');
 const timeOutSelect = adForm.querySelector('[name="timeout"]');
 
-const validateTypesAndPrices = () => {
-  const validatePriceInput = (value) => value.length && parseInt(value, 10) >= minPrices[housingTypeSelect.value];
+const initValidation = () => {
+  const validateTypesAndPrices = () => {
+    const validatePriceInput = (value) => value.length && parseInt(value, 10) >= minPrices[housingTypeSelect.value];
 
-  const getPriceErrorMessage = () => `Минимальная цена ${minPrices[housingTypeSelect.value]}`;
+    const getPriceErrorMessage = () => `Минимальная цена ${minPrices[housingTypeSelect.value]}`;
 
-  housingTypeOptions.forEach((option) => {
-    option.addEventListener('change', function () {
-      priceInput.placeholder = minPrices[this.value];
-      pristine.validate(priceInput.placeholder);
+    housingTypeOptions.forEach((option) => {
+      option.addEventListener('change', function () {
+        priceInput.placeholder = minPrices[this.value];
+        pristine.validate(priceInput.placeholder);
+      });
     });
-  });
 
-  pristine.addValidator(priceInput, validatePriceInput, getPriceErrorMessage);
-};
+    pristine.addValidator(priceInput, validatePriceInput, getPriceErrorMessage);
+  };
 
-const validateRoomsAndCapasity = () => {
-  const validateRoomNumberSelect = () => roomNumberOptions[roomNumberSelect.value].includes(capacitySelect.value);
+  const validateRoomsAndCapasity = () => {
+    const validateRoomNumberSelect = () => roomNumberOptions[roomNumberSelect.value].includes(capacitySelect.value);
 
-  const getRoomNumberErrorMessage = () => `
-      ${roomNumberSelect.options[roomNumberSelect.selectedIndex].textContent}
-      ${capacitySelect.options[capacitySelect.selectedIndex].textContent}
-      ${roomNumberSelect.options[roomNumberSelect.selectedIndex].textContent === '1 комната' ? 'недоступна' : 'недоступны'}
-    `;
+    const getRoomNumberErrorMessage = () => `
+        ${roomNumberSelect.options[roomNumberSelect.selectedIndex].textContent}
+        ${capacitySelect.options[capacitySelect.selectedIndex].textContent}
+        ${roomNumberSelect.options[roomNumberSelect.selectedIndex].textContent === '1 комната' ? 'недоступна' : 'недоступны'}
+      `;
 
-  capacitySelect.addEventListener('change', () => {
-    pristine.validate(roomNumberSelect);
-  });
+    capacitySelect.addEventListener('change', () => {
+      pristine.validate(roomNumberSelect);
+    });
 
-  pristine.addValidator(roomNumberSelect, validateRoomNumberSelect, getRoomNumberErrorMessage);
-  pristine.addValidator(capacitySelect, validateRoomNumberSelect);
-};
+    pristine.addValidator(roomNumberSelect, validateRoomNumberSelect, getRoomNumberErrorMessage);
+    pristine.addValidator(capacitySelect, validateRoomNumberSelect);
+  };
 
-const synchronizeTimeInAndTimeOut = () => {
-  adFormTime.addEventListener('change', (evt) => {
-    timeInSelect.value = evt.target.value;
-    timeOutSelect.value = evt.target.value;
-  });
+  const synchronizeTimeInAndTimeOut = () => {
+    adFormTime.addEventListener('change', (evt) => {
+      timeInSelect.value = evt.target.value;
+      timeOutSelect.value = evt.target.value;
+    });
+  };
+
+  validateTypesAndPrices();
+  validateRoomsAndCapasity();
+  synchronizeTimeInAndTimeOut();
 };
 
 const setAdFormSubmit = () => {
@@ -84,7 +90,7 @@ const setAdFormSubmit = () => {
         () => {
           showSuccessMessage();
           unblockSubmitButton();
-          activateResetButton();
+          resetForm();
         },
         () => {
           showErrorMessage();
@@ -96,4 +102,4 @@ const setAdFormSubmit = () => {
   });
 };
 
-export { pristine, validateTypesAndPrices, validateRoomsAndCapasity, synchronizeTimeInAndTimeOut, setAdFormSubmit };
+export { pristine, initValidation, setAdFormSubmit };

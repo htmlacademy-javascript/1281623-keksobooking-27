@@ -4,7 +4,6 @@ const Url = {
   DATA: 'https://27.javascript.pages.academy/keksobooking/data',
   SERVER: 'https://27.javascript.pages.academy/keksobooking',
 };
-const OFFERS_COUNT = 10;
 
 const getData = (onSuccess, OnError) => {
   fetch(Url.DATA)
@@ -15,7 +14,7 @@ const getData = (onSuccess, OnError) => {
       throw new Error('Ошибка загрузки данных с сервера');
     })
     .then((data) => {
-      onSuccess(data.slice(0, OFFERS_COUNT));
+      onSuccess(data);
       activateMapForm();
     })
     .catch(() => OnError('Ошибка загрузки данных с сервера'));
