@@ -8,8 +8,7 @@ const housingTypeSelect = document.querySelector('#housing-type');
 const housingPriceSelect = document.querySelector('#housing-price');
 const housingRoomsSelect = document.querySelector('#housing-rooms');
 const housingGuestsSelect = document.querySelector('#housing-guests');
-const housingFeaturesFieldset = document.querySelector('#housing-features');
-const checkedInputs = housingFeaturesFieldset.querySelectorAll('input:checked');
+const housingFeaturesInputs = document.querySelectorAll('#housing-features input');
 
 const priceOptions = {
   low: {
@@ -42,13 +41,15 @@ const filterByGuests = ({ offer }) =>
   housingGuestsSelect.value === 'any' ||
   offer.guests === parseInt(housingGuestsSelect.value, 10);
 
-
-const filterByFeatures = ({ offer }) => {
-  if (offer.features) {
-    return Array.from(checkedInputs).every((feature) =>
-      offer.features.includes(feature.value));
-  }
-};
+const filterByFeatures = ({ offer }) =>
+  Array.from(housingFeaturesInputs).every((feature) => {
+    if (!feature.checked) {
+      return true;
+    } else if (!offer.features) {
+      return false;
+    }
+    return offer.features.includes(feature.value);
+  });
 
 mapFilters.addEventListener('change', debounce(() => {
   getData(renderMarkers, showAlert);
