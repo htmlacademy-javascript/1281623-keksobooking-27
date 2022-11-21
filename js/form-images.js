@@ -1,7 +1,7 @@
 const FILE_TYPES = ['jpg', 'jpeg', 'png', 'svg'];
+const DEFAULT_AVATAR_SRC = 'img/muffin-grey.svg';
 
 const adForm = document.querySelector('.ad-form');
-
 const avatarImage = adForm.querySelector('.ad-form-header__preview img');
 const avatarInput = adForm.querySelector('[name="avatar"]');
 const photoContainer = adForm.querySelector('.ad-form__photo');
@@ -9,7 +9,7 @@ const photoInput = adForm.querySelector('[name="images"]');
 
 const isFileType = (file) => FILE_TYPES.some((fileType) => file.name.endsWith(fileType));
 
-const setUploadAvatar = () => {
+const setAvatarFile = () => {
   avatarInput.addEventListener('change', () => {
     const file = avatarInput.files[0];
     if (isFileType(file)) {
@@ -18,7 +18,7 @@ const setUploadAvatar = () => {
   });
 };
 
-const setUploadPhotos = () => {
+const setPhotoFile = () => {
   photoInput.addEventListener('change', () => {
     const file = photoInput.files[0];
     if (isFileType(file)) {
@@ -37,4 +37,9 @@ const setUploadPhotos = () => {
   });
 };
 
-export { setUploadAvatar, setUploadPhotos };
+const resetAvatarAndPhoto = () => {
+  avatarImage.src = DEFAULT_AVATAR_SRC;
+  photoContainer.innerHTML = '';
+};
+
+export { setAvatarFile, setPhotoFile, resetAvatarAndPhoto };

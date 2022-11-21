@@ -3,12 +3,12 @@ import { renderMarkers } from './map.js';
 import { showAlert } from './form-utils.js';
 import { debounce } from './debounce.js';
 
-const mapFilters = document.querySelector('.map__filters');
-const housingTypeSelect = document.querySelector('#housing-type');
-const housingPriceSelect = document.querySelector('#housing-price');
-const housingRoomsSelect = document.querySelector('#housing-rooms');
-const housingGuestsSelect = document.querySelector('#housing-guests');
-const housingFeaturesInputs = document.querySelectorAll('#housing-features input');
+const mapForm = document.querySelector('.map__filters');
+const housingTypeSelect = mapForm.querySelector('#housing-type');
+const housingPriceSelect = mapForm.querySelector('#housing-price');
+const housingRoomsSelect = mapForm.querySelector('#housing-rooms');
+const housingGuestsSelect = mapForm.querySelector('#housing-guests');
+const housingFeaturesInputs = mapForm.querySelectorAll('#housing-features input');
 
 const priceOptions = {
   low: {
@@ -51,8 +51,24 @@ const filterByFeatures = ({ offer }) =>
     return offer.features.includes(feature.value);
   });
 
-mapFilters.addEventListener('change', debounce(() => {
-  getData(renderMarkers, showAlert);
-}, 500));
+const initFilters = (value) => {
+  if (
+    filterByType(value) &&
+    filterByPrice(value) &&
+    filterByRooms(value) &&
+    filterByGuests(value) &&
+    filterByFeatures(value)
+  ) {
+    return true;
+  }
+};
 
-export { filterByType, filterByPrice, filterByRooms, filterByGuests, filterByFeatures };
+const resetMapForm = () => {
+  mapForm.reset();
+};
+
+mapForm.addEventListener('change', debounce(() => {
+  getData(renderMarkers, showAlert);
+}));
+
+export { initFilters, resetMapForm };

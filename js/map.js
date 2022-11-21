@@ -1,6 +1,6 @@
 import { createOfferElement } from './create-offers.js';
 import { pristine } from './form-validation.js';
-import { filterByType, filterByPrice, filterByRooms, filterByGuests, filterByFeatures } from './filter.js';
+import { initFilters } from './filter.js';
 
 const addressInput = document.querySelector('#address');
 const map = L.map('map-canvas');
@@ -60,12 +60,7 @@ const renderMarkers = (arr) => {
   markerGroup.clearLayers();
 
   const newArray = arr
-    .slice()
-    .filter(filterByType)
-    .filter(filterByPrice)
-    .filter(filterByRooms)
-    .filter(filterByGuests)
-    .filter(filterByFeatures)
+    .filter(initFilters)
     .slice(0, OFFERS_COUNT);
 
   newArray.forEach((data) => {
