@@ -1,5 +1,5 @@
 import { sendData } from './server.js';
-import { blockSubmitButton, unblockSubmitButton, showSuccessMessage, showErrorMessage, resetForm } from './form-utils.js';
+import { blockSubmitButton, unblockSubmitButton, showSuccessMessage, showErrorMessage, resetAdForm } from './form-utils.js';
 
 const adForm = document.querySelector('.ad-form');
 
@@ -90,7 +90,7 @@ const setAdFormSubmit = () => {
         () => {
           showSuccessMessage();
           unblockSubmitButton();
-          resetForm();
+          resetAdForm();
         },
         () => {
           showErrorMessage();

@@ -1,5 +1,7 @@
 import { resetSlider } from './slider.js';
 import { resetMainPinMarker, renderMarkers } from './map.js';
+import { resetAvatarAndPhoto } from './form-images.js';
+import { resetMapForm } from './filter.js';
 import { getData } from './server.js';
 
 const ALERT_SHOW_TIME = 5000;
@@ -91,14 +93,16 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-const resetForm = () => {
+const resetAdForm = () => {
   resetButton.click();
 };
 
 resetButton.addEventListener('click', () => {
   resetSlider();
   resetMainPinMarker();
+  resetAvatarAndPhoto();
+  resetMapForm();
   getData(renderMarkers, showAlert);
 });
 
-export {activateMapForm, activateAdForm, blockSubmitButton, unblockSubmitButton, showSuccessMessage, showErrorMessage, showAlert, resetForm};
+export {activateMapForm, activateAdForm, blockSubmitButton, unblockSubmitButton, showSuccessMessage, showErrorMessage, showAlert, resetAdForm};

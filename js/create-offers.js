@@ -58,10 +58,10 @@ const createOfferElement = ({ author, offer }) => {
   const photoElement = card.querySelector('.popup__photo');
   if (offer.photos) {
     photoContainer.innerHTML = '';
-    offer.photos.forEach((photo) => {
-      const photoNode = photoElement.cloneNode(true);
-      photoNode.src = photo;
-      photoContainer.append(photoNode);
+    offer.photos.forEach((photoSrc) => {
+      const photo = photoElement.cloneNode(true);
+      photo.src = photoSrc;
+      photoContainer.append(photo);
     });
   } else {
     photoContainer.style.display = 'none';
