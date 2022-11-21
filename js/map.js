@@ -1,11 +1,13 @@
 import { createOfferElement } from './create-offers.js';
 import { pristine } from './form-validation.js';
+import { filterByType, filterByPrice, filterByRooms, filterByGuests, filterByFeatures } from './filter.js';
 
 const addressInput = document.querySelector('#address');
 const map = L.map('map-canvas');
 const markerGroup = L.layerGroup().addTo(map);
 
 const ZOOM_LEVEL = 13;
+const OFFERS_COUNT = 10;
 
 const coordinatesOfTokyo = {
   lat: 35.675,
@@ -57,7 +59,16 @@ const initMap = (onMapLoad) => {
 const renderMarkers = (arr) => {
   markerGroup.clearLayers();
 
-  arr.forEach((data) => {
+  const newArray = arr
+    .slice()
+    .filter(filterByType)
+    .filter(filterByPrice)
+    .filter(filterByRooms)
+    .filter(filterByGuests)
+    .filter(filterByFeatures)
+    .slice(0, OFFERS_COUNT);
+
+  newArray.forEach((data) => {
     const marker = L.marker(
       {
         lat: data.location.lat,

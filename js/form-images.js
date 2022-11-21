@@ -9,24 +9,26 @@ const photoInput = adForm.querySelector('[name="images"]');
 
 const isFileType = (file) => FILE_TYPES.some((fileType) => file.name.endsWith(fileType));
 
-const uploadAvatar = () => {
+const setUploadAvatar = () => {
   avatarInput.addEventListener('change', () => {
-    if (isFileType(avatarInput.files[0])) {
-      avatarImage.src = URL.createObjectURL(avatarInput.files[0]);
+    const file = avatarInput.files[0];
+    if (isFileType(file)) {
+      avatarImage.src = URL.createObjectURL(file);
     }
   });
 };
 
-const uploadPhotos = () => {
+const setUploadPhotos = () => {
   photoInput.addEventListener('change', () => {
-    if (isFileType(photoInput.files[0])) {
+    const file = photoInput.files[0];
+    if (isFileType(file)) {
       const imgElement = document.createElement('img');
 
       photoContainer.innerHTML = '';
       photoContainer.style.position = 'relative';
       photoContainer.append(imgElement);
 
-      imgElement.src = URL.createObjectURL(photoInput.files[0]);
+      imgElement.src = URL.createObjectURL(file);
       imgElement.style.position = 'absolute';
       imgElement.style.top = '50%';
       imgElement.style.transform = 'translateY(-50%)';
@@ -35,4 +37,4 @@ const uploadPhotos = () => {
   });
 };
 
-export { uploadAvatar, uploadPhotos };
+export { setUploadAvatar, setUploadPhotos };

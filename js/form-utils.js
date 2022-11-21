@@ -9,8 +9,8 @@ const adForm = document.querySelector('.ad-form');
 const submitButton = adForm.querySelector('[type="submit"]');
 const resetButton = adForm.querySelector('[type="reset"]');
 
-const successTemplate = document.querySelector('#success').content.querySelector('.success');
-const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
+const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
 const errorButton = document.querySelector('#error').content.querySelector('.error__button');
 
 const activateMapForm = () => {
@@ -30,41 +30,41 @@ const unblockSubmitButton = () => {
 };
 
 const showSuccessMessage = () => {
-  const success = successTemplate.cloneNode(true);
-  document.body.append(success);
+  const successMessage = successMessageTemplate.cloneNode(true);
+  document.body.append(successMessage);
 
-  success.addEventListener('click', () => {
-    success.remove();
+  successMessage.addEventListener('click', () => {
+    successMessage.remove();
   }, { once: true }
   );
 
   document.addEventListener('keydown', (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
-      success.remove();
+      successMessage.remove();
     }
   }, { once: true }
   );
 };
 
 const showErrorMessage = () => {
-  const error = errorTemplate.cloneNode(true);
-  document.body.append(error);
+  const errorMessage = errorMessageTemplate.cloneNode(true);
+  document.body.append(errorMessage);
 
-  error.addEventListener('click', () => {
-    error.remove();
+  errorMessage.addEventListener('click', () => {
+    errorMessage.remove();
   }, { once: true }
   );
 
   errorButton.addEventListener('click', () => {
-    error.remove();
+    errorMessage.remove();
   }, { once: true }
   );
 
   document.addEventListener('keydown', (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
-      error.remove();
+      errorMessage.remove();
     }
   }, { once: true }
   );
@@ -91,7 +91,7 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-const activateResetButton = () => {
+const resetForm = () => {
   resetButton.click();
 };
 
@@ -101,4 +101,4 @@ resetButton.addEventListener('click', () => {
   getData(renderMarkers, showAlert);
 });
 
-export {activateMapForm, activateAdForm, blockSubmitButton, unblockSubmitButton, activateResetButton, showSuccessMessage, showErrorMessage, showAlert};
+export {activateMapForm, activateAdForm, blockSubmitButton, unblockSubmitButton, showSuccessMessage, showErrorMessage, showAlert, resetForm};
