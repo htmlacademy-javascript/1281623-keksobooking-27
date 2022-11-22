@@ -2,17 +2,14 @@ import { createOfferElement } from './create-offers.js';
 import { pristine } from './form-validation.js';
 import { initFilters } from './filter.js';
 
+const ZOOM_LEVEL = 13;
+const OFFERS_COUNT = 10;
+const TOKYO_LAT = 35.675;
+const TOKYO_LNG = 139.75;
+
 const addressInput = document.querySelector('#address');
 const map = L.map('map-canvas');
 const markerGroup = L.layerGroup().addTo(map);
-
-const ZOOM_LEVEL = 13;
-const OFFERS_COUNT = 10;
-
-const coordinatesOfTokyo = {
-  lat: 35.675,
-  lng: 139.75,
-};
 
 const mainPinIcon = L.icon({
   iconUrl: '/img/main-pin.svg',
@@ -26,13 +23,14 @@ const offerPinIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
-const mainPinMarker = L.marker(
-  coordinatesOfTokyo,
-  {
-    draggable: true,
-    icon: mainPinIcon,
-  },
-);
+const mainPinMarker = L.marker({
+  lat: TOKYO_LAT,
+  lng: TOKYO_LNG,
+},
+{
+  draggable: true,
+  icon: mainPinIcon,
+});
 
 const initMap = (onMapLoad) => {
   L.tileLayer(
@@ -42,18 +40,22 @@ const initMap = (onMapLoad) => {
     },
   ).addTo(map);
 
-  map.on('load', onMapLoad).setView(coordinatesOfTokyo, ZOOM_LEVEL);
+  map
+    .on('load', onMapLoad)
+    .setView({
+      lat: TOKYO_LAT,
+      lng: TOKYO_LNG,
+    }, ZOOM_LEVEL);
+};
 
-  addressInput.addEventListener('click', () => {
-    mainPinMarker.addTo(map);
-    addressInput.placeholder = `${(coordinatesOfTokyo.lat).toFixed(5)}, ${(coordinatesOfTokyo.lng).toFixed(5)}`;
-  });
-
-  mainPinMarker.on('move', () => {
-    const coordinates = mainPinMarker.getLatLng();
-    addressInput.value = `${(coordinates.lat).toFixed(5)}, ${(coordinates.lng).toFixed(5)}`;
-    pristine.validate(addressInput);
-  });
+const initMainPinMarker = () => {
+  mainPinMarker
+    .addTo(map)
+    .on('move', () => {
+      const coordinates = mainPinMarker.getLatLng();
+      addressInput.value = `${(coordinates.lat).toFixed(5)}, ${(coordinates.lng).toFixed(5)}`;
+      pristine.validate(addressInput);
+    });
 };
 
 const renderMarkers = (arr) => {
@@ -64,14 +66,13 @@ const renderMarkers = (arr) => {
     .slice(0, OFFERS_COUNT);
 
   newArray.forEach((data) => {
-    const marker = L.marker(
-      {
-        lat: data.location.lat,
-        lng: data.location.lng,
-      },
-      {
-        offerPinIcon,
-      },
+    const marker = L.marker({
+      lat: data.location.lat,
+      lng: data.location.lng,
+    },
+    {
+      offerPinIcon,
+    },
     );
 
     marker
@@ -80,10 +81,15 @@ const renderMarkers = (arr) => {
   });
 };
 
-const resetMainPinMarker = () => {
-  mainPinMarker.remove();
-  mainPinMarker.setLatLng(coordinatesOfTokyo);
-  addressInput.placeholder = '';
+const resetMap = () => {
+  mainPinMarker.setLatLng({
+    lat: TOKYO_LAT,
+    lng: TOKYO_LNG,
+  });
+  map.setView({
+    lat: TOKYO_LAT,
+    lng: TOKYO_LNG,
+  }, ZOOM_LEVEL);
 };
 
-export { initMap, renderMarkers, resetMainPinMarker };
+export { initMap, initMainPinMarker, renderMarkers, resetMap };

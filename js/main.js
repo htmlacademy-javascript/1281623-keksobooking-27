@@ -1,4 +1,4 @@
-import { initMap, renderMarkers } from './map.js';
+import { initMap, initMainPinMarker, renderMarkers } from './map.js';
 import { getData } from './server.js';
 import { activateAdForm, showAlert } from './form-utils.js';
 import { initSlider } from './slider.js';
@@ -10,6 +10,7 @@ initMap(() => {
   getData(renderMarkers, showAlert);
   activateAdForm();
   initSlider();
+  initMainPinMarker();
 });
 
 initValidation();

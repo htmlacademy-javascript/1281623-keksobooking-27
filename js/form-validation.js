@@ -1,18 +1,6 @@
 import { sendData } from './server.js';
 import { blockSubmitButton, unblockSubmitButton, showSuccessMessage, showErrorMessage, resetAdForm } from './form-utils.js';
 
-const adForm = document.querySelector('.ad-form');
-
-const pristine = new Pristine(adForm, {
-  classTo: 'ad-form__element',
-  errorClass: 'ad-form__element--invalid',
-  errorTextParent: 'ad-form__element',
-  errorTextClass: 'text-help',
-});
-
-const housingTypeSelect = adForm.querySelector('[name="type"]');
-const housingTypeOptions = adForm.querySelectorAll('[name="type"]');
-const priceInput = adForm.querySelector('[name="price"]');
 const minPrices = {
   bungalow: 0,
   flat: 1000,
@@ -21,8 +9,6 @@ const minPrices = {
   palace: 10000,
 };
 
-const roomNumberSelect = adForm.querySelector('[name="rooms"]');
-const capacitySelect = adForm.querySelector('[name="capacity"]');
 const roomNumberOptions = {
   '1': ['1'],
   '2': ['1', '2'],
@@ -30,9 +16,24 @@ const roomNumberOptions = {
   '100': ['0'],
 };
 
+const adForm = document.querySelector('.ad-form');
+const housingTypeSelect = adForm.querySelector('[name="type"]');
+const housingTypeOptions = adForm.querySelectorAll('[name="type"]');
+const priceInput = adForm.querySelector('[name="price"]');
+
+const roomNumberSelect = adForm.querySelector('[name="rooms"]');
+const capacitySelect = adForm.querySelector('[name="capacity"]');
+
 const adFormTime = adForm.querySelector('.ad-form__element--time');
 const timeInSelect = adForm.querySelector('[name="timein"]');
 const timeOutSelect = adForm.querySelector('[name="timeout"]');
+
+const pristine = new Pristine(adForm, {
+  classTo: 'ad-form__element',
+  errorClass: 'ad-form__element--invalid',
+  errorTextParent: 'ad-form__element',
+  errorTextClass: 'text-help',
+});
 
 const initValidation = () => {
   const validateTypesAndPrices = () => {

@@ -1,5 +1,5 @@
 import { resetSlider } from './slider.js';
-import { resetMainPinMarker, renderMarkers } from './map.js';
+import { resetMap, renderMarkers } from './map.js';
 import { resetAvatarAndPhoto } from './form-images.js';
 import { resetMapForm } from './filter.js';
 import { getData } from './server.js';
@@ -14,6 +14,8 @@ const resetButton = adForm.querySelector('[type="reset"]');
 const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
 const errorButton = document.querySelector('#error').content.querySelector('.error__button');
+
+const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const activateMapForm = () => {
   mapForm.classList.remove('map__filters--disabled');
@@ -41,7 +43,7 @@ const showSuccessMessage = () => {
   );
 
   document.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape') {
+    if (isEscapeKey(evt)) {
       evt.preventDefault();
       successMessage.remove();
     }
@@ -64,7 +66,7 @@ const showErrorMessage = () => {
   );
 
   document.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape') {
+    if (isEscapeKey(evt)) {
       evt.preventDefault();
       errorMessage.remove();
     }
@@ -99,7 +101,7 @@ const resetAdForm = () => {
 
 resetButton.addEventListener('click', () => {
   resetSlider();
-  resetMainPinMarker();
+  resetMap();
   resetAvatarAndPhoto();
   resetMapForm();
   getData(renderMarkers, showAlert);
