@@ -3,13 +3,7 @@ import { renderMarkers } from './map.js';
 import { showAlert } from './form-utils.js';
 import { debounce } from './debounce.js';
 
-const mapForm = document.querySelector('.map__filters');
-const housingTypeSelect = mapForm.querySelector('#housing-type');
-const housingPriceSelect = mapForm.querySelector('#housing-price');
-const housingRoomsSelect = mapForm.querySelector('#housing-rooms');
-const housingGuestsSelect = mapForm.querySelector('#housing-guests');
-const housingFeaturesInputs = mapForm.querySelectorAll('#housing-features input');
-
+const DEFAULT_VALUE = 'any';
 const priceOptions = {
   low: {
     MIN: 0,
@@ -25,20 +19,27 @@ const priceOptions = {
   }
 };
 
+const mapForm = document.querySelector('.map__filters');
+const housingTypeSelect = mapForm.querySelector('#housing-type');
+const housingPriceSelect = mapForm.querySelector('#housing-price');
+const housingRoomsSelect = mapForm.querySelector('#housing-rooms');
+const housingGuestsSelect = mapForm.querySelector('#housing-guests');
+const housingFeaturesInputs = mapForm.querySelectorAll('#housing-features input');
+
 const filterByType = ({ offer }) =>
-  housingTypeSelect.value === 'any' || offer.type === housingTypeSelect.value;
+  housingTypeSelect.value === DEFAULT_VALUE || offer.type === housingTypeSelect.value;
 
 const filterByPrice = ({ offer }) =>
-  housingPriceSelect.value === 'any' ||
+  housingPriceSelect.value === DEFAULT_VALUE ||
   (offer.price >= priceOptions[housingPriceSelect.value].MIN &&
     offer.price <= priceOptions[housingPriceSelect.value].MAX);
 
 const filterByRooms = ({ offer }) =>
-  housingRoomsSelect.value === 'any' ||
+  housingRoomsSelect.value === DEFAULT_VALUE ||
   offer.rooms === parseInt(housingRoomsSelect.value, 10);
 
 const filterByGuests = ({ offer }) =>
-  housingGuestsSelect.value === 'any' ||
+  housingGuestsSelect.value === DEFAULT_VALUE ||
   offer.guests === parseInt(housingGuestsSelect.value, 10);
 
 const filterByFeatures = ({ offer }) =>

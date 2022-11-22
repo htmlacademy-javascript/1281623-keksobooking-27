@@ -1,5 +1,3 @@
-const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
-
 const housingTypesNames = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -7,6 +5,8 @@ const housingTypesNames = {
   bungalow: 'Бунгало',
   hotel: 'Отель',
 };
+
+const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const createOfferElement = ({ author, offer }) => {
   const card = cardTemplate.cloneNode(true);
@@ -23,14 +23,15 @@ const createOfferElement = ({ author, offer }) => {
   card.querySelector('.popup__type').textContent = housingTypesNames[offer.type];
 
   const capasity = card.querySelector('.popup__text--capacity');
-  if (offer.rooms === 100) {
-    capasity.textContent = `${offer.rooms} комнат (не для гостей)`;
-  } else if (offer.rooms === 1 && offer.guests === 1) {
+
+  if (offer.rooms === 1 && offer.guests === 1) {
     capasity.textContent = `${offer.rooms} комната для ${offer.guests} гостя`;
   } else if (offer.rooms > 1 && offer.guests === 1) {
     capasity.textContent = `${offer.rooms} комнаты для ${offer.guests} гостя`;
   } else if (offer.rooms > 1 && offer.guests > 1) {
     capasity.textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
+  } else if (offer.rooms > 1 && offer.guests === 0) {
+    capasity.textContent = `${offer.rooms} комнат (не для гостей)`;
   }
 
   card.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin} выезд до ${offer.checkout}`;
